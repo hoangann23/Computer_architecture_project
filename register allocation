@@ -1,0 +1,17 @@
+register allocation
+R0
+R1  - the constant 1
+R2  - count number of space characters added so far (can be used for something else when prepend done)
+R3  - bit position when getting parity (can be used for something else outside of parity)
+R4  - register anded with input for bit isolation
+R5  - keep track of parity bit
+R6  - input string for parity (can be used for something else outside of parity)
+R7  - the constant 7
+R8
+R9  - the constant 127
+R10 - number of space characters (can be allocated for something else after prepend)
+R11 - 0x20 (the ascii space character)
+R12 - LSFR tap pattern
+R3  - LSFR start state
+R14 - mem read address
+R15 - mem write address

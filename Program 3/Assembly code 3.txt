@@ -1,0 +1,187 @@
+stri #1
+mov R1
+stri #7
+mov R7
+stri #10
+mov R10
+stri #63
+add R10
+add R1
+mov R10
+stri #61
+mov R6
+stri #32
+mov R11
+
+stri #1
+mov R13
+mov R9
+check_seed: stri #52
+mov R8
+ld R8
+mov R12
+
+check_feedback: stri #63
+add R1
+mov R14
+set R8
+cmp R6
+beq next_seed
+
+check_space: ld R14
+//isolate the bottom seven bits
+lsl R1
+lsr R1
+//decrypt
+xor R9
+add R11
+cmp R11
+bne next_pattern
+//advance lsfr
+set R9
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R9
+lsl R2
+lsr R1
+or R3
+mov R9
+set R14
+add R1
+mov R14
+cmp R10
+blt check_space
+set R9
+mov R13
+//store 63 in R8
+stri #63
+mov R8
+add R8
+add R1
+//store 127 in R9
+mov R9
+b decrypt
+
+next_seed: set R13
+add R1
+mov R13
+mov R9
+b check_seed
+
+next_pattern: set R8
+add R1
+mov R8
+ld R8
+mov R12
+set R13
+mov R9
+b check_feedback
+
+// decrypt leading spaces
+decrypt: ld R14
+lsl R1
+lsr R1
+xor R13
+add R11
+cmp R11
+bne decrypt_message
+//advance current lsfr
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R13
+lsl R2
+lsr R1
+or R3
+mov R13
+//advance read
+set R14
+add R1
+mov R14
+b decrypt
+
+decrypt_message: ld R14
+lsl R1
+lsr R1
+mov R5
+// check parity bit
+rxr R0
+mov R2
+ld R14
+lsr R7
+cmp R2
+bne error_flag
+set R5
+xor R13
+str R15
+set R14
+cmp R9
+beq append_spaces
+//advance current lsfr
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R13
+lsl R2
+lsr R1
+or R3
+mov R13
+//advance read address
+set R14
+add R1
+mov R14
+//advance write
+set R15
+add R1
+mov R15
+b decrypt_message
+
+error_flag: stri #63
+mov R4
+add R4
+mov R4
+stri #2
+add R4
+str R15
+set R14
+cmp R9
+beq append_spaces
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R13
+lsl R2
+lsr R1
+or R3
+mov R13
+set R14
+add R1
+mov R14
+set R15
+add R1
+mov R15
+b decrypt_message
+
+append_spaces: set R15
+cmp R8
+beq doneC
+set R15
+add R1
+mov R15
+stri #0
+str R15
+b append_spaces
+
+doneC:

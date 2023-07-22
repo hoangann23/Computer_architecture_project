@@ -1,0 +1,118 @@
+stri #1
+mov R1
+stri #10
+mov R10
+stri #61
+mov R6
+stri #32
+mov R11
+
+//find lsfr seed and pattern
+//lsfr starting state (R13)
+stri #1
+mov R13
+//lsfr current state
+mov R9
+
+//initalize feedback pattern
+//data_mem address pointer stored in R8
+//feedback pattern stored in R12
+check_seed: stri #52
+mov R8
+ld R8
+mov R12
+
+//initialize read and write pointers
+check_feedback: stri #63
+add R1
+mov R14
+stri #0
+mov R15
+//check all 9 feedback patterns already?
+set R8
+cmp R6
+beq next_seed
+
+check_space: ld R14
+//decrypt
+xor R9
+add R11
+mov R7
+cmp R11
+//if not a space, check next feedback pattern
+bne next_pattern
+
+//else, store space in memory
+set R7
+str R15
+//advance current lsfr
+set R9
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R9
+lsl R2
+lsr R1
+or R3
+mov R9
+//advance read pointer
+set R14
+add R1
+mov R14
+//advance write pointer
+set R15
+add R1
+mov R15
+cmp R10
+blt check_space
+set R9
+mov R13
+stri #63
+mov R2
+b decrypt
+
+next_seed: set R13
+add R1
+mov R13
+mov R9
+b check_seed
+
+next_pattern: set R8
+add R1
+mov R8
+ld R8
+mov R12
+set R13
+mov R9
+b check_feedback
+
+decrypt: ld R14
+xor R13
+str R15
+set R15
+cmp R2
+beq doneB
+//advance current lsfr
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R2
+set R13
+lsl R2
+lsr R1
+or R3
+mov R13
+//advance read pointer
+set R14
+add R1
+mov R14
+//advance write pointer
+set R15
+add R1
+mov R15
+b decrypt
+doneB:

@@ -1,0 +1,100 @@
+stri #1
+mov R1
+stri #63
+mov R9
+add R9
+add R1
+mov R9
+stri #32
+mov R11
+stri #62
+mov R14
+stri #63
+add R1
+mov R15
+
+ld R14
+mov R12
+set R14
+add R1
+mov R14
+ld R14
+mov R13
+stri #61
+mov R14
+
+ld R14
+mov R10
+
+prepend: set R11
+// add encryption and parity
+//encrypt
+sub R11
+xor R13
+str R15
+//update lsfr
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R4
+set R13
+lsl R4
+lsr R1
+or R3
+mov R13
+//increment write address
+set R15
+add R1
+mov R15
+//R2 counts the number of spaces so far
+set R2
+add R1
+mov R2
+stri #10
+mov R3
+set R2
+cmp R3
+blt prepend
+set R2
+cmp R10
+beq message_start
+stri #15
+mov R3
+set R2
+cmp R3
+blt prepend
+
+message_start: stri #0
+mov R14
+
+encrypt: ld R14
+//encrypt
+xor R13
+str R15
+//update lsfr
+set R13
+and R12
+rxr R0
+mov R3
+stri #2
+mov R4
+set R13
+lsl R4
+lsr R1
+or R3
+mov R13
+//check if reached mem[127]
+set R15
+cmp R9
+beq done
+//increment read and write address
+set R14
+add R1
+mov R14
+set R15
+add R1
+mov R15
+b encrypt
+done:

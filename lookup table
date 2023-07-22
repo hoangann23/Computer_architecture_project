@@ -1,0 +1,9 @@
+branch lookup table
+label             lookup          instruction #         address
+prepend           0001            28
+lsfr              0010            39
+parity            0011            66
+message_start     0100            102
+encrypt           0101            104
+lsfr2             0110            116
+parity2           0111
